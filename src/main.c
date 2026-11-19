@@ -33,33 +33,7 @@ void liberarEstacionamento(Estacionamento *est) {
     est->capacidade = 0;
 }
 
-// Funções temporárias para evitar erro de compilação
-void cadastrarVeiculo(Estacionamento *est) { 
-    printf("\n[Em construcao] Cadastrar veiculo\n"); 
-}
-void consultarVeiculo(Estacionamento *est) { 
-    printf("\n[Em construcao] Consultar veiculo\n"); 
-}
-void atualizarVeiculo(Estacionamento *est) { 
-    printf("\n[Em construcao] Atualizar veiculo\n"); 
-}
-void moverVeiculo(Estacionamento *est) { 
-    printf("\n[Em construcao] Mover veiculo\n"); 
-}
-void listarVeiculos(Estacionamento *est) { 
-    printf("\n[Em construcao] Listar veiculos\n"); 
-}
-void removerVeiculo(Estacionamento *est) { 
-    printf("\n[Em construcao] Remover veiculo\n"); 
-}
-void exibirMapa(Estacionamento *est) { 
-    printf("\n[Em construcao] Exibir mapa\n"); 
-}
-void gerarRelatorio(Estacionamento *est) { 
-    printf("\n[Em construcao] Gerar relatorio\n"); 
-}
 
-//
 
 int main() {
     Estacionamento est;
