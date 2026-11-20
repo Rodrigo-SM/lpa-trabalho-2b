@@ -38,7 +38,7 @@ void listarVeiculos(Estacionamento *est);
 
 // Funcoes relacionadas as vagas
 void moverVeiculo(Estacionamento *est);
-void exibirMapa(Estacionamento *est);
+void exibirMapa(const Estacionamento *est);
 void gerarRelatorio(Estacionamento *est);
 
 // Funcoes de apoio ao mapa (linha e coluna como o usuario digita: 1 a 4 e 1 a 5)

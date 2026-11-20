@@ -4,6 +4,7 @@
 
 // Inicializa o estacionamento e aloca a capacidade inicial (2 registros)
 void inicializarEstacionamento(Estacionamento *est) {
+
     int i, j;
 
     est->quantidade = 0;
@@ -97,9 +98,32 @@ void removerVeiculo(Estacionamento *est) {
     (void) est;
     printf("\n[Em construcao] Remover veiculo\n");
 }
-void exibirMapa(Estacionamento *est) {
-    (void) est;
-    printf("\n[Em construcao] Exibir mapa\n");
+void exibirMapa(const Estacionamento *est) {
+    int i, j;
+
+    printf("\n===== MAPA DE VAGAS =====\n");
+
+    // Cabecalho com as colunas (rotulos comecam em 1 na tela)
+    printf("   ");
+    for (j = 0; j < COLUNAS; j++) {
+        printf("C%d ", j + 1);
+    }
+    printf("\n");
+
+    // Uma linha por fileira
+    for (i = 0; i < LINHAS; i++) {
+        printf("F%d ", i + 1);
+        for (j = 0; j < COLUNAS; j++) {
+            if (est->vagas[i][j] == 1) {
+                printf("1  ");
+            } else {
+                printf("0  ");
+            }
+        }
+        printf("\n"); // quebra a linha so depois de percorrer todas as colunas
+    }
+
+    printf("1 = ocupada; 0 = livre\n");
 }
 void gerarRelatorio(Estacionamento *est) {
     (void) est;
