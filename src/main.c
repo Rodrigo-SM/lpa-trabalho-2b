@@ -2,16 +2,16 @@
 #include <stdlib.h>
 #include "estacionamento.h"
 
-// Função para inicializar o estacionamento e alocar a capacidade inicial (2 registros)
+// Funï¿½ï¿½o para inicializar o estacionamento e alocar a capacidade inicial (2 registros)
 void inicializarEstacionamento(Estacionamento *est) {
-    int i, j; // Variáveis declaradas no início do bloco
+    int i, j; // Variï¿½veis declaradas no inï¿½cio do bloco
     
     est->quantidade = 0;
     est->capacidade = CAPACIDADE_INICIAL;
     est->veiculos = (Veiculo *) malloc(est->capacidade * sizeof(Veiculo));
     
     if (est->veiculos == NULL) {
-        printf("Erro crítico: Falha ao alocar memória inicial!\n");
+        printf("Erro crï¿½tico: Falha ao alocar memï¿½ria inicial!\n");
         exit(1);
     }
     
@@ -23,7 +23,7 @@ void inicializarEstacionamento(Estacionamento *est) {
     }
 }
 
-// Função para liberar a memória dinâmica ao encerrar
+// Funï¿½ï¿½o para liberar a memï¿½ria dinï¿½mica ao encerrar
 void liberarEstacionamento(Estacionamento *est) {
     if (est->veiculos != NULL) {
         free(est->veiculos);
@@ -33,7 +33,7 @@ void liberarEstacionamento(Estacionamento *est) {
     est->capacidade = 0;
 }
 
-// Funções temporárias para evitar erro de compilação
+// Funï¿½ï¿½es temporï¿½rias para evitar erro de compilaï¿½ï¿½o
 void cadastrarVeiculo(Estacionamento *est) { 
     printf("\n[Em construcao] Cadastrar veiculo\n"); 
 }

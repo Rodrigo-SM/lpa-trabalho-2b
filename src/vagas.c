@@ -125,9 +125,57 @@ void exibirMapa(const Estacionamento *est) {
 
     printf("1 = ocupada; 0 = livre\n");
 }
-void gerarRelatorio(Estacionamento *est) {
-    (void) est;
-    printf("\n[Em construcao] Gerar relatorio\n");
+// ---------- Funcoes de apoio ao relatorio ----------
+
+// Conta as vagas ocupadas percorrendo a MATRIZ (estado real do mapa)
+int contarOcupadas(const Estacionamento *est) {
+    int i, j;
+    int total = 0;
+
+    for (i = 0; i < LINHAS; i++) {
+        for (j = 0; j < COLUNAS; j++) {
+            if (est->vagas[i][j] == 1) {
+                total++;
+            }
+        }
+    }
+    return total;
+}
+
+// Conta os veiculos de uma categoria (1 = carro, 2 = moto) percorrendo o VETOR.
+// Vai ate 'quantidade' e nao ate 'capacidade': depois dela ha espaco reservado
+// que ainda nao tem veiculo (lixo de memoria).
+int contarPorCategoria(const Estacionamento *est, int categoria) {
+    int i;
+    int total = 0;
+
+    for (i = 0; i < est->quantidade; i++) {
+        if (est->veiculos[i].categoria == categoria) {
+            total++;
+        }
+    }
+    return total;
+}
+
+// Percentual de ocupacao: (ocupadas / total de vagas) * 100.
+// O 100.0 forca a conta em ponto flutuante (2 / 20 entre inteiros daria 0).
+double calcularPercentual(int ocupadas) {
+    return (ocupadas * 100.0) / (LINHAS * COLUNAS);
+}
+
+// Exibe o relatorio de ocupacao. So imprime; os calculos vem das funcoes acima.
+void gerarRelatorio(const Estacionamento *est) {
+    int total = LINHAS * COLUNAS;
+    int ocupadas = contarOcupadas(est);
+    int livres = total - ocupadas;
+
+    printf("\n===== RELATORIO DE OCUPACAO =====\n");
+    printf("Total de vagas : %d\n", total);
+    printf("Vagas ocupadas : %d\n", ocupadas);
+    printf("Vagas livres   : %d\n", livres);
+    printf("Ocupacao       : %.2f%%\n", calcularPercentual(ocupadas));
+    printf("Carros         : %d\n", contarPorCategoria(est, 1));
+    printf("Motos          : %d\n", contarPorCategoria(est, 2));
 }
 
 int main() {
@@ -135,6 +183,7 @@ int main() {
     int opcao = -1; // valor que nao e opcao valida, para o 'continue' repetir o menu
 
     inicializarEstacionamento(&est);
+
 
     do {
         printf("\n========================================\n");

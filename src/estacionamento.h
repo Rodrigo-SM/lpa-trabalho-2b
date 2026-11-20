@@ -39,12 +39,17 @@ void listarVeiculos(Estacionamento *est);
 // Funcoes relacionadas as vagas
 void moverVeiculo(Estacionamento *est);
 void exibirMapa(const Estacionamento *est);
-void gerarRelatorio(Estacionamento *est);
+void gerarRelatorio(const Estacionamento *est);
 
 // Funcoes de apoio ao mapa (linha e coluna como o usuario digita: 1 a 4 e 1 a 5)
 int posicaoValida(int linha, int coluna);
 int vagaLivre(const Estacionamento *est, int linha, int coluna);
 int ocuparVaga(Estacionamento *est, int linha, int coluna);
 int liberarVaga(Estacionamento *est, int linha, int coluna);
+
+// Funcoes de apoio ao relatorio
+int contarOcupadas(const Estacionamento *est);
+int contarPorCategoria(const Estacionamento *est, int categoria);
+double calcularPercentual(int ocupadas);
 
 #endif
