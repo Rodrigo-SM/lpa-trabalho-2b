@@ -8,6 +8,10 @@
 // Capacidade inicial do vetor dinamico
 #define CAPACIDADE_INICIAL 2
 
+// Categorias de veiculo
+#define CARRO 1
+#define MOTO 2
+
 // Representa um veiculo cadastrado
 typedef struct {
     char identificador[8];
@@ -25,9 +29,10 @@ typedef struct {
     int vagas[LINHAS][COLUNAS];
 } Estacionamento;
 
-// Gerenciamento do estacionamento
-void inicializarEstacionamento(Estacionamento *est);
-void liberarEstacionamento(Estacionamento *est);
+// Gerenciamento do vetor dinamico
+int inicializarVetor(Estacionamento *est);
+int aumentarCapacidade(Estacionamento *est);
+void liberarVetor(Estacionamento *est);
 
 // Funcoes relacionadas aos veiculos
 void cadastrarVeiculo(Estacionamento *est);
