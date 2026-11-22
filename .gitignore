@@ -1,4 +1,8 @@
-*.exe
-*.o
 *.dev
 *.layout
+*.exe
+*.o
+src/vagas
+src/vagas.dSYM/
+compilar.bat
+*_backup.c
