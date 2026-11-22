@@ -358,3 +358,139 @@ void listarVeiculos(Estacionamento *est) {
            est->quantidade);
 }
 
+
+
+// ==========================
+// ATUALIZAR VEICULO
+// ==========================
+
+void atualizarVeiculo(Estacionamento *est) {
+    char identificador[8];
+    char novaDescricao[61];
+    int indice;
+    int novaCategoria;
+    int opcao;
+
+    if (est == NULL || est->veiculos == NULL) {
+        printf("\nEstacionamento nao inicializado.\n");
+        return;
+    }
+
+    printf("\n===== ATUALIZAR VEICULO =====\n");
+    printf("Digite o identificador: ");
+
+    if (!lerTexto(identificador, sizeof(identificador)) ||
+        !validarIdentificador(identificador)) {
+        printf("Identificador invalido.\n");
+        return;
+    }
+
+    indice = buscarVeiculo(est, identificador);
+
+    if (indice == -1) {
+        printf("\nVeiculo nao encontrado.\n");
+        return;
+    }
+
+    printf("\nVeiculo encontrado: %s\n",
+           est->veiculos[indice].descricao);
+
+    printf("\nO que deseja atualizar?\n");
+    printf("1. Descricao\n");
+    printf("2. Categoria\n");
+    printf("Opcao: ");
+
+    if (!lerInteiro(&opcao)) {
+        printf("Opcao invalida.\n");
+        return;
+    }
+
+    switch (opcao) {
+        case 1:
+            printf("Nova descricao: ");
+
+            if (!lerTexto(novaDescricao, sizeof(novaDescricao)) ||
+                !validarDescricao(novaDescricao)) {
+                printf("Descricao invalida.\n");
+                return;
+            }
+
+            strcpy(est->veiculos[indice].descricao, novaDescricao);
+
+            printf("\nDescricao atualizada com sucesso!\n");
+            break;
+
+        case 2:
+            printf("Nova categoria (1 - Carro / 2 - Moto): ");
+
+            if (!lerInteiro(&novaCategoria) ||
+                (novaCategoria != CARRO && novaCategoria != MOTO)) {
+                printf("Categoria invalida.\n");
+                return;
+            }
+
+            est->veiculos[indice].categoria = novaCategoria;
+
+            printf("\nCategoria atualizada com sucesso!\n");
+            break;
+
+        default:
+            printf("Opcao inexistente.\n");
+            break;
+    }
+}
+
+// ==========================
+// REMOVER VEICULO
+// ==========================
+
+void removerVeiculo(Estacionamento *est) {
+    char identificador[8];
+    int indice;
+    int i;
+    int linha;
+    int coluna;
+
+    if (est == NULL || est->veiculos == NULL) {
+        printf("\nEstacionamento nao inicializado.\n");
+        return;
+    }
+
+    if (est->quantidade == 0) {
+        printf("\nNao existem veiculos cadastrados.\n");
+        return;
+    }
+
+    printf("\n===== REMOVER VEICULO =====\n");
+    printf("Digite o identificador: ");
+
+    if (!lerTexto(identificador, sizeof(identificador)) ||
+        !validarIdentificador(identificador)) {
+        printf("Identificador invalido.\n");
+        return;
+    }
+
+    indice = buscarVeiculo(est, identificador);
+
+    if (indice == -1) {
+        printf("\nVeiculo nao encontrado.\n");
+        return;
+    }
+
+    linha = est->veiculos[indice].linha - 1;
+    coluna = est->veiculos[indice].coluna - 1;
+
+    // Libera a vaga ocupada pelo veiculo.
+    est->vagas[linha][coluna] = 0;
+
+    // Desloca os registros seguintes para preencher o espaco.
+    for (i = indice; i < est->quantidade - 1; i++) {
+        est->veiculos[i] = est->veiculos[i + 1];
+    }
+
+    // Atualiza a quantidade de registros.
+    est->quantidade--;
+
+    printf("\nVeiculo removido com sucesso!\n");
+}
+

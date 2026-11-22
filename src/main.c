@@ -1,102 +1,111 @@
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <limits.h>
 #include "estacionamento.h"
 
-// Função para inicializar o estacionamento e alocar a capacidade inicial (2 registros)
-void inicializarEstacionamento(Estacionamento *est) {
-    int i, j; // Variáveis declaradas no início do bloco
-    
-    est->quantidade = 0;
-    est->capacidade = CAPACIDADE_INICIAL;
-    est->veiculos = (Veiculo *) malloc(est->capacidade * sizeof(Veiculo));
-    
-    if (est->veiculos == NULL) {
-        printf("Erro crítico: Falha ao alocar memória inicial!\n");
-        exit(1);
-    }
-    
-    // Inicializa todas as vagas do mapa como livres (0)
-    for (i = 0; i < LINHAS; i++) {
-        for (j = 0; j < COLUNAS; j++) {
-            est->vagas[i][j] = 0;
-        }
-    }
-}
-
-// Função para liberar a memória dinâmica ao encerrar
-void liberarEstacionamento(Estacionamento *est) {
-    if (est->veiculos != NULL) {
-        free(est->veiculos);
-        est->veiculos = NULL;
-    }
-    est->quantidade = 0;
-    est->capacidade = 0;
-}
-
-
-
-int main() {
+int main(void) {
     Estacionamento est;
-    inicializarEstacionamento(&est);
+    char entrada[20];
+    char *fim;
+    long valor;
+    int opcao = -1;
 
-    int opcao;
+    // Inicializa o vetor dinamico e a matriz de vagas.
+    if (!inicializarVetor(&est)) {
+        printf("Erro ao inicializar o estacionamento.\n");
+        return 1;
+    }
 
     do {
-        printf("\n========================================\n");
-        printf("   SISTEMA DE GESTAO DE ESTACIONAMENTO  \n");
-        printf("========================================\n");
+        printf("\n========== ESTACIONAMENTO ==========\n");
         printf("1. Cadastrar veiculo\n");
         printf("2. Consultar veiculo\n");
         printf("3. Atualizar veiculo\n");
         printf("4. Mover veiculo\n");
-        printf("5. Listar veiculos\n");
-        printf("6. Remover veiculo\n");
+        printf("5. Remover veiculo\n");
+        printf("6. Listar veiculos\n");
         printf("7. Exibir mapa de vagas\n");
-        printf("8. Exibir relatorio de ocupacao\n");
-        printf("0. Encerrar\n");
-        printf("----------------------------------------\n");
+        printf("8. Relatorio de ocupacao\n");
+        printf("0. Sair\n");
+        printf("====================================\n");
         printf("Escolha uma opcao: ");
 
-        if (scanf("%d", &opcao) != 1) {
-            printf("\n[Erro] Entrada invalida. Digite um numero.\n");
-            while (getchar() != '\n'); // Limpa o buffer do teclado
+        // Le a opcao como texto para evitar problemas com fgets.
+        if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
+            printf("\nErro na leitura. Encerrando o programa.\n");
+            break;
+        }
+
+        errno = 0;
+        valor = strtol(entrada, &fim, 10);
+
+        // Ignora espacos e caracteres de quebra de linha.
+        while (*fim == ' ' || *fim == '\t' ||
+               *fim == '\n' || *fim == '\r') {
+            fim++;
+        }
+
+        // Verifica se a entrada e um numero inteiro valido.
+        if (fim == entrada || *fim != '\0' ||
+            errno == ERANGE ||
+            valor < INT_MIN || valor > INT_MAX) {
+            printf("\nOpcao invalida! Digite um numero.\n");
             continue;
         }
+
+        opcao = (int) valor;
 
         switch (opcao) {
             case 1:
                 cadastrarVeiculo(&est);
                 break;
+
             case 2:
                 consultarVeiculo(&est);
                 break;
+
             case 3:
                 atualizarVeiculo(&est);
                 break;
+
             case 4:
                 moverVeiculo(&est);
                 break;
+
             case 5:
-                listarVeiculos(&est);
-                break;
-            case 6:
                 removerVeiculo(&est);
                 break;
+
+            case 6:
+                listarVeiculos(&est);
+                break;
+
             case 7:
                 exibirMapa(&est);
                 break;
+
             case 8:
                 gerarRelatorio(&est);
                 break;
+
             case 0:
-                liberarEstacionamento(&est);
-                printf("\nEncerrando o programa e liberando memoria...\n");
+                printf("\nEncerrando o estacionamento...\n");
                 break;
+
             default:
-                printf("\n[Aviso] Opcao inexistente! Escolha entre 0 e 8.\n");
+                printf("\nOpcao inexistente! Tente novamente.\n");
+                break;
         }
 
     } while (opcao != 0);
 
+    // Libera a memoria alocada para o vetor.
+    liberarVetor(&est);
+
+    printf("Memoria liberada. Programa encerrado.\n");
+
     return 0;
 }
+
